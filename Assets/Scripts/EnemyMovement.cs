@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -6,6 +7,7 @@ public class EnemyMovement : MonoBehaviour
 {
     private NavMeshAgent _navMeshAgent;
     public Transform[] wayPoints;
+    public Transform currentWaypointDest;
     private Vector3 _currentDestPos;
     private Transform _currentDest;
     private Transform _nextDest;
@@ -43,6 +45,7 @@ public class EnemyMovement : MonoBehaviour
             _nextDest = wayPoints[Random.Range(0, wayPoints.Length)];
             _currentDestPos = _nextDest.position;
             _navMeshAgent.destination = _currentDestPos;
+            ChangeCurrentWaypointPos(_currentDestPos);
         } while (_currentDest == _nextDest);
     }
 
@@ -79,5 +82,10 @@ public class EnemyMovement : MonoBehaviour
         Vector3 directionToTarget = transform.position - other.transform.position;
         float angle = Vector3.Angle(transform.forward, directionToTarget);
         return Mathf.Abs(angle) > 100;
+    }
+
+    void ChangeCurrentWaypointPos(Vector3 pos)
+    {
+        currentWaypointDest.transform.position = pos;
     }
 }
