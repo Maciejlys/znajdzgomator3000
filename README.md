@@ -74,7 +74,7 @@ Your **player** needs to have these components:
 
 Your **NPC** needs to have these components:
 * Sphere colider
-* mesh agent
+* Nav mesh agent
 * EnemyMovement
 * Waypoints
 
