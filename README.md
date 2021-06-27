@@ -29,9 +29,7 @@ I was responsible for making simple NPC that would follow the player after they 
 
 And I wasn't happy with the result, so I decided to do it again and now add few more features.
 
-NPC in this case its just a cube, patrols between few waypoints. If player walks into his range, it shoots raycast in direction of the player if the player is in front of it.
-If the player is hit, NPC walks to that position where he last saw the player. Then he does 360 degrees turnaround and returns back to patroling. In any time, if player walks into it's range
-state is chenged to "Chasing" and the player is either followd, if in range and in line of sight. Or NPC does what was mentioned above.
+NPC, patrols between a few waypoints. If a player walks into his range and it's in front of the NPC, it shoots a raycast in the direction of the player.. If the player is hit, the NPC walks to that position where he last saw the player. Then he does a 360 degree turnaround and returns back to patrolling. At any time, if a player walks into its range, the state is changed to "Chasing" and the player is either followed, if in range and in line of sight.
 
 I also added few indicators so its easier to see where are the waypoints and where is he currently heading.
 
