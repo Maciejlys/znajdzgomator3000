@@ -63,7 +63,7 @@ U will need <a href="https://unity3d.com/get-unity/download">Unity</a> on your P
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-I recorded demo that shaws all the features available and you can find it there: <a href="https://youtu.be/UZbOzIOV_SU" target="_blank"> Youtube demo </a>
+I recorded demo that shows all the features available and you can find it there: <a href="https://youtu.be/UZbOzIOV_SU" target="_blank"> Youtube demo </a>
 
 
 <!-- LICENSE -->
