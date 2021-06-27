@@ -61,6 +61,22 @@ U will need <a href="https://unity3d.com/get-unity/download">Unity</a> on your P
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+Your map have to be baked, set your world as Navigation Static and then bake.
+
+Your player needs to have these components:
+*Tag "Player"
+
+Your NPC needs to have these components:
+*Sphere colider
+*Nav mesh agent
+*EnemyMovement
+*Waypoints
+
+**Sphere colider** indicates how big range of the NPC is, it will be shooting raycast as soon as player walks into its range.
+**Waypoints** have to be somewhere in the game world and they have to be assigned to EnemyMovement script. If you want an indicator of where the NPC is currently heading then
+make another waypoint, make it visible and then assign it to EnemyMovement.
+
+
 I recorded demo that shows all the features available and you can find it there: <a href="https://youtu.be/UZbOzIOV_SU" target="_blank"> Youtube demo </a>
 
 
