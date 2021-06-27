@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class FpsCounter : MonoBehaviour
 {
     [SerializeField] private Text _fpsText;
-    [SerializeField] private float _hudRefreshRate = 0.1f;
+    [SerializeField] private float _hudRefreshRate = 0.01f;
  
     private float _timer;
  

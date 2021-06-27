@@ -6,5 +6,6 @@ enum EnemyState
 {
     Patroling,
     Chasing,
+    LookingAround,
     Evade
 }

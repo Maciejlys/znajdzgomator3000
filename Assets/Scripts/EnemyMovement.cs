@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -9,22 +11,101 @@ public class EnemyMovement : MonoBehaviour
     public Transform[] wayPoints;
     public Transform currentWaypointDest;
     private Vector3 _currentDestPos;
-    private Transform _currentDest;
-    private Transform _nextDest;
+    private Transform _currentDest, _nextDest;
+    private Vector3 _lastPlayerPos;
     private EnemyState _currentState;
 
     void Start()
     {
+        //Debugging state printer
+        StartCoroutine("StatePrinter");
+
+
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _currentState = EnemyState.Patroling;
         if (_navMeshAgent != null)
         {
             _currentDest = wayPoints[Random.Range(0, wayPoints.Length)];
             _currentDestPos = _currentDest.position;
             _navMeshAgent.destination = _currentDestPos;
+            ChangeCurrentWaypointPos(_currentDestPos);
+        }
+    }
+
+    IEnumerator StatePrinter() //Debugging state printer
+    {
+        while (true)
+        {
+            Debug.Log(_currentState);
+            yield return new WaitForSeconds(1f);
         }
     }
 
     private void FixedUpdate()
+    {
+        if (_currentState == EnemyState.Patroling) Patroling();
+        else if (_currentState == EnemyState.Chasing) Chasing();
+        switch (_currentState)
+        {
+            case EnemyState.Patroling:
+                Patroling();
+                break;
+            case EnemyState.Chasing:
+                Chasing();
+                break;
+            case EnemyState.LookingAround:
+                LookAround();
+                break;
+            case EnemyState.Evade:
+                break;
+        }
+    }
+
+    private void LookAround()
+    {
+        _currentState = EnemyState.Evade;
+        StartCoroutine(Rotate(5f));
+    }
+
+    IEnumerator Rotate(float duration)
+    {
+        Quaternion startRot = transform.rotation;
+        float t = 0f;
+        while (t < duration)
+        {
+            if (_currentState != EnemyState.Evade) //Stops the rotation in case player has been spotted
+            {
+                continue;
+            }
+            transform.rotation = startRot;
+            t += Time.deltaTime;
+            transform.rotation = startRot * Quaternion.AngleAxis(t / duration * 360f, Vector3.up);
+            yield return null;
+        }
+
+        transform.rotation = startRot;
+        yield return new WaitForSeconds(1f);
+        _currentState = EnemyState.Patroling;
+    }
+
+    void Chasing()
+    {
+        StopCoroutine(Rotate(0));
+        _navMeshAgent.destination = _lastPlayerPos;
+        ChangeCurrentWaypointPos(_lastPlayerPos);
+
+        if (CheckIfOnWaypoint())
+        {
+            _currentState = EnemyState.LookingAround;
+        }
+    }
+
+    void Patroling()
+    {
+        if (CheckIfOnWaypoint()) ChooseNewDestination();
+    }
+
+    bool CheckIfOnWaypoint()
     {
         if (!_navMeshAgent.pathPending)
         {
@@ -32,10 +113,12 @@ public class EnemyMovement : MonoBehaviour
             {
                 if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
                 {
-                    ChooseNewDestination();
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     void ChooseNewDestination()
@@ -67,11 +150,11 @@ public class EnemyMovement : MonoBehaviour
                 directionToTarget, out hit, 20);
             if (raycast)
             {
-                Debug.DrawRay(transform.position, directionToTarget, Color.blue);
-                Debug.Log("Hit: " + hit.collider.name);
                 if (hit.transform.CompareTag("Player"))
                 {
-                    Debug.Log("XD");
+                    //Do stuff, enemy sees the player
+                    _currentState = EnemyState.Chasing;
+                    _lastPlayerPos = player.transform.position;
                 }
             }
         }
