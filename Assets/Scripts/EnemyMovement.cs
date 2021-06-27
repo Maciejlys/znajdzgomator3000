@@ -17,7 +17,7 @@ public class EnemyMovement : MonoBehaviour
 
     void Start()
     {
-        //Debugging state printer
+        //Debug state printer
         StartCoroutine("StatePrinter");
 
 
@@ -32,7 +32,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    IEnumerator StatePrinter() //Debugging state printer
+    IEnumerator StatePrinter() //Debug state printer
     {
         while (true)
         {
@@ -67,7 +67,7 @@ public class EnemyMovement : MonoBehaviour
         StartCoroutine(Rotate(5f));
     }
 
-    IEnumerator Rotate(float duration)
+    IEnumerator Rotate(float duration)  // Enables the NPC to turn around
     {
         bool flag = false;
         Quaternion startRot = transform.rotation;
@@ -84,18 +84,18 @@ public class EnemyMovement : MonoBehaviour
             yield return null;
         }
 
-        if(!flag) transform.rotation = startRot;    //flag prevents enemy from weird snapping while rotating.
+        if(!flag) transform.rotation = startRot;    // flag prevents enemy from weird snapping while rotating.
         yield return new WaitForSeconds(1f);
         _currentState = EnemyState.Patroling;
     }
 
     void Chasing()
     {
-        StopCoroutine(Rotate(0));
+        StopCoroutine("Rotate");
         _navMeshAgent.destination = _lastPlayerPos;
         ChangeCurrentWaypointPos(_lastPlayerPos);
 
-        if (CheckIfOnWaypoint())
+        if (CheckIfOnWaypoint())    // After NPC gets to last seen player position and state wasn't changed it looks around.
         {
             _currentState = EnemyState.LookingAround;
         }
@@ -106,7 +106,7 @@ public class EnemyMovement : MonoBehaviour
         if (CheckIfOnWaypoint()) ChooseNewDestination();
     }
 
-    bool CheckIfOnWaypoint()
+    bool CheckIfOnWaypoint()    // Checks if NPC came to its destination
     {
         if (!_navMeshAgent.pathPending)
         {
