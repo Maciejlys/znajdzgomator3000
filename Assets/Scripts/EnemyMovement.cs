@@ -69,21 +69,22 @@ public class EnemyMovement : MonoBehaviour
 
     IEnumerator Rotate(float duration)
     {
+        bool flag = false;
         Quaternion startRot = transform.rotation;
         float t = 0f;
         while (t < duration)
         {
             if (_currentState != EnemyState.Evade) //Stops the rotation in case player has been spotted
             {
-                continue;
+                flag = true;
+                break;
             }
-            transform.rotation = startRot;
             t += Time.deltaTime;
             transform.rotation = startRot * Quaternion.AngleAxis(t / duration * 360f, Vector3.up);
             yield return null;
         }
 
-        transform.rotation = startRot;
+        if(!flag) transform.rotation = startRot;    //flag prevents enemy from weird snapping while rotating.
         yield return new WaitForSeconds(1f);
         _currentState = EnemyState.Patroling;
     }
