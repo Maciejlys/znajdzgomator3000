@@ -31,7 +31,7 @@ And I wasn't happy with the result, so I decided to do it again and now I added 
 
 The idea  was simple:
 * Make an NPC that patrols between waypoints
-* If player walks into its range it checks if its in front and if yes it goes to that position, if it still has line of sight then it follows the player, if not it goes to last position where he saw the player
+* If player walks into its range and the player is in front of the NPC, it goes to that position. If it still has line of sight then it follows the player, if not it goes to last position where the player was
 * If the player is missing and NPC can't see them, it waits few seconds, turns around to check every direction and then returns to patrolling
 * At any time, even when going back to patroling NPC should be able to see the player and follow him if conditions mentioned above are fulfilled.
 
