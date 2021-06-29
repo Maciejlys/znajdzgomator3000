@@ -54,7 +54,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-U will need <a href="https://unity3d.com/get-unity/download">Unity</a> on your PC
+You will need <a href="https://unity3d.com/get-unity/download">Unity</a> on your PC
 
 ### Installation
 
