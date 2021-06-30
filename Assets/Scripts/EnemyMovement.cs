@@ -26,6 +26,7 @@ public class EnemyMovement : MonoBehaviour
         if (_navMeshAgent != null)
         {
             _currentDest = wayPoints[Random.Range(0, wayPoints.Length)];
+            _currentDestPos = _currentDest.position;
             ChangeCurrentWaypointPos(_currentDestPos);
         }
     }
