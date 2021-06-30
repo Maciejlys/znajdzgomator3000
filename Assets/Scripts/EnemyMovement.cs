@@ -26,8 +26,6 @@ public class EnemyMovement : MonoBehaviour
         if (_navMeshAgent != null)
         {
             _currentDest = wayPoints[Random.Range(0, wayPoints.Length)];
-            _currentDestPos = _currentDest.position;
-            _navMeshAgent.destination = _currentDestPos;
             ChangeCurrentWaypointPos(_currentDestPos);
         }
     }
@@ -91,7 +89,6 @@ public class EnemyMovement : MonoBehaviour
     void Chasing()
     {
         StopCoroutine("Rotate");
-        _navMeshAgent.destination = _lastPlayerPos;
         ChangeCurrentWaypointPos(_lastPlayerPos);
 
         if (CheckIfOnWaypoint()
@@ -128,7 +125,6 @@ public class EnemyMovement : MonoBehaviour
         {
             _nextDest = wayPoints[Random.Range(0, wayPoints.Length)];
             _currentDestPos = _nextDest.position;
-            _navMeshAgent.destination = _currentDestPos;
             ChangeCurrentWaypointPos(_currentDestPos);
         } while (_currentDest == _nextDest);
     }
@@ -170,6 +166,7 @@ public class EnemyMovement : MonoBehaviour
 
     void ChangeCurrentWaypointPos(Vector3 pos)
     {
+        _navMeshAgent.destination = pos;
         currentWaypointDest.transform.position = pos;
     }
 }
