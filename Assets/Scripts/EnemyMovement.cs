@@ -43,8 +43,6 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_currentState == EnemyState.Patroling) Patroling();
-        else if (_currentState == EnemyState.Chasing) Chasing();
         switch (_currentState)
         {
             case EnemyState.Patroling:
@@ -67,7 +65,7 @@ public class EnemyMovement : MonoBehaviour
         StartCoroutine(Rotate(5f));
     }
 
-    IEnumerator Rotate(float duration)  // Enables the NPC to turn around
+    IEnumerator Rotate(float duration) // Enables the NPC to turn around
     {
         bool flag = false;
         Quaternion startRot = transform.rotation;
@@ -79,12 +77,13 @@ public class EnemyMovement : MonoBehaviour
                 flag = true;
                 break;
             }
+
             t += Time.deltaTime;
             transform.rotation = startRot * Quaternion.AngleAxis(t / duration * 360f, Vector3.up);
             yield return null;
         }
 
-        if(!flag) transform.rotation = startRot;    // flag prevents enemy from weird snapping while rotating.
+        if (!flag) transform.rotation = startRot; // flag prevents enemy from weird snapping while rotating.
         yield return new WaitForSeconds(1f);
         _currentState = EnemyState.Patroling;
     }
@@ -95,7 +94,8 @@ public class EnemyMovement : MonoBehaviour
         _navMeshAgent.destination = _lastPlayerPos;
         ChangeCurrentWaypointPos(_lastPlayerPos);
 
-        if (CheckIfOnWaypoint())    // After NPC gets to last seen player position and state wasn't changed it looks around.
+        if (CheckIfOnWaypoint()
+        ) // After NPC gets to last seen player position and state wasn't changed it looks around.
         {
             _currentState = EnemyState.LookingAround;
         }
@@ -106,7 +106,7 @@ public class EnemyMovement : MonoBehaviour
         if (CheckIfOnWaypoint()) ChooseNewDestination();
     }
 
-    bool CheckIfOnWaypoint()    // Checks if NPC came to its destination
+    bool CheckIfOnWaypoint() // Checks if NPC came to its destination
     {
         if (!_navMeshAgent.pathPending)
         {
